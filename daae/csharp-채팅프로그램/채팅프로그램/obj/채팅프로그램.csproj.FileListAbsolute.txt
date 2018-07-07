@@ -1,0 +1,8 @@
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.Form1.resources
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.Properties.Resources.resources
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.csproj.GenerateResource.Cache
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\bin\Debug\채팅프로그램.exe
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\bin\Debug\채팅프로그램.pdb
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.exe
+C:\Users\KITRI\Desktop\daae\채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.pdb

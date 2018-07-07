@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\7.접근제한\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\7.접근제한\bin\Debug\7.접근제한.exe
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\7.접근제한\bin\Debug\7.접근제한.pdb
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\7.접근제한\obj\Debug\7.접근제한.exe
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\7.접근제한\obj\Debug\7.접근제한.pdb

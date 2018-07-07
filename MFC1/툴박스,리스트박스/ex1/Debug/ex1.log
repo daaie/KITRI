@@ -1,0 +1,9 @@
+﻿C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (check.vcxproj, toolbox.vcxproj, 체크.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  stdafx.cpp
+c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\afx.h(38): warning C4996: 'MBCS_Support_Deprecated_In_MFC': MBCS support in MFC is deprecated and may be removed in a future version of MFC.
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\afx.h(33): note: see declaration of 'MBCS_Support_Deprecated_In_MFC'
+  ex1Dlg.cpp
+  ex1.cpp
+  Generating Code...
+  ex1.vcxproj -> C:\Users\KITRI\Desktop\MFC1\ex1\Debug\01. toolbox.exe
+  ex1.vcxproj -> C:\Users\KITRI\Desktop\MFC1\ex1\Debug\01. toolbox.pdb (Partial PDB)

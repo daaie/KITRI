@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\9.정적메모리\bin\Debug\9.정적메모리.exe
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\9.정적메모리\bin\Debug\9.정적메모리.pdb
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\9.정적메모리\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\9.정적메모리\obj\Debug\9.정적메모리.exe
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\9.정적메모리\obj\Debug\9.정적메모리.pdb

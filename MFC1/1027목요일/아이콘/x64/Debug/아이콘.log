@@ -1,0 +1,7 @@
+﻿  아이콘Dlg.cpp
+c:\users\kitri\desktop\mfc1\1027목요일\아이콘\아이콘dlg.cpp(104): error C2440: 'initializing': cannot convert from 'const char [1]' to 'ATL::CStringT<wchar_t,StrTraitMFC_DLL<wchar_t,ATL::ChTraitsCRT<wchar_t>>>'
+  c:\users\kitri\desktop\mfc1\1027목요일\아이콘\아이콘dlg.cpp(104): note: Constructor for class 'ATL::CStringT<wchar_t,StrTraitMFC_DLL<wchar_t,ATL::ChTraitsCRT<wchar_t>>>' is declared 'explicit'
+c:\users\kitri\desktop\mfc1\1027목요일\아이콘\아이콘dlg.cpp(110): error C2664: 'void ATL::CStringT<wchar_t,StrTraitMFC_DLL<wchar_t,ATL::ChTraitsCRT<wchar_t>>>::Format(UINT,...)': cannot convert argument 1 from 'const char [10]' to 'const wchar_t *'
+  c:\users\kitri\desktop\mfc1\1027목요일\아이콘\아이콘dlg.cpp(110): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+c:\users\kitri\desktop\mfc1\1027목요일\아이콘\아이콘dlg.cpp(114): error C2664: 'int CListCtrl::InsertItem(UINT,int,LPCTSTR,UINT,UINT,int,LPARAM)': cannot convert argument 2 from 'const char [9]' to 'LPCTSTR'
+  c:\users\kitri\desktop\mfc1\1027목요일\아이콘\아이콘dlg.cpp(114): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast

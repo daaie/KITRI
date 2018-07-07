@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\csharp-delegate\dictionary\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\csharp-delegate\dictionary\bin\Debug\dictionary.exe
+C:\Users\KITRI\Desktop\daae\csharp-delegate\dictionary\bin\Debug\dictionary.pdb
+C:\Users\KITRI\Desktop\daae\csharp-delegate\dictionary\obj\Debug\dictionary.exe
+C:\Users\KITRI\Desktop\daae\csharp-delegate\dictionary\obj\Debug\dictionary.pdb

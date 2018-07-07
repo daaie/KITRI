@@ -1,0 +1,354 @@
+쓰레드와 동기화
+프로그램을 작은단위로 쪼개서 동시에 실행
+
+1)쓰레드
+
+@쓰레드 생성
+#include <pthread.h>
+int pthread_create (pthread_t *thread //쓰레드의 번호를 저장할 주소, 
+const pthread_attr_t *attr //쓰레드 속성변수의 주소 퀀텀, 타임스레드, 
+void *(*start_routine)(void *)//함수의 주소 포인터이므로 함수를 바로 호출하징 않음
+스케줄러가 호출할 때를 정해줌, 
+void *arg
+//함수의 인자값);
+*thread		쓰레드 ID
+attr		쓰레드 속성
+start_routine 	쓰레드 함수 이름
+arg		생성될 쓰레드에 전달될 인자들
+
+리턴값
+	정상 : 0
+
+@쓰레드 종료
+#include <pthread.h>
+void pthread_exit (void *value_ptr);
+//더이상 코드가 없으면 쓰레드는 종료함. 디테쳐블로 종료 
+사용한 자원을 정리함 다른 쓰레드가 자원을 못써
+//pthread_exit으로 종료 하면 조이너블로 종료
+사용한 자원을 냄겨둬서 다른 쓰레드가 자원울 쓸 수 있음
+이걸로 종료하자
+--------------------------------------------------------------------------
+#include <stdio.h>
+#include <pthread.h>
+
+int thread_args[3] = { 0, 1, 2 };  /* 쓰레드가 사용할 인자 */
+
+/* 쓰레드로 수행할 함수 */
+void* Thread( void *arg )
+{
+    int i;
+    for ( i=0; i<3; i++ ){
+        printf( "thread %d: %dth iteration\n", *(int*)arg, i );
+//	sleep(1);
+    }
+    pthread_exit(0); 조이너블로 종료  /* 쓰레드 종료 함수 */
+}
+
+void main( void )
+{
+    int i;
+    pthread_t threads[3]; /* 쓰레드 아이디를 위한 변수 */
+    
+    for ( i=0; i<3; i++ )  /* 쓰레드 생성 */
+        // TODO: 스레드 생성하기
+        pthread_create( &threads[i],                /* 쓰레드ID 주소*/
+                        NULL,         //디폴트임   /* 쓰레드 속성 */
+                        Thread, /* 쓰레드 시작 함수 */
+                        &thread_args[i] 함수 Thread에 0,1,2보내줌 ); /* 생성된 쓰레드에 전달 인자 */
+
+    4개의 쓰레드가 있음
+ 
+   pthread_exit(0); /*메인 쓰레드 종료 */ 
+자식을 3마리 만들고 죽음..
+얘가 주석처리 ? 앞부분만 나옴..
+pthread _exit을 해야 조이너블 됨
+
+}
+gcc -lpthread
+------------------------------------------------------------------------------
+2)동기화
+
+@세마포어 ->기차길 표시..
+
+세마포어 자체는 공유자원이 아니라 접근하기 위한 티켓.
+공유메모리에서는 written 값으로 제어햇는데
+여기서는 API가 그런역할을해줌
+
+세마포어는 큐가 생김.
+
+세마포어를 획득하려는 애들은 큐로 들어감->대기
+
+세마포어가 반환되면 우선순위.먼저온 순으로 깨어남
+
+
+종류 - 	이진 //한칸짜리 화장실 (공유자원이 한개)//열림닫힘 두개뿐//초기값 1
+	계수 //여러칸 화장실(공유자원이 여러개)//세마포어 밸류가 획득할때마다 줄어들		다가 0이되면 닫힘
+
+연산 -	initialize (create)
+	wait (pend) //시그널 획득하는 함수
+	signal (post)
+API (함수를 선언할때는 파라미터 이름 생략해도됨) 
+
+sem_wait( sem_t * ); 세마포어를 획득하는 함수 못하면 대기상태. 
+                      sem_t는 세마포어 변수 주소  
+sem_trywait( sem_t * ); 세마 포어 획득 못하면 대기로 빠지지 마라
+sem_post( sem_t * ); 세마포어 반환하는 함수..세마포어를 획득한 놈이 반환할 필요없다
+		     대납가능
+sem_getvalue( sem_t *, int * ); 현재 밸류값 반환. int * 여기에 현재 밸류값 저장
+sem_destroy( sem_t * ); 사용한 자원 반환 함수.
+--------------------------------------------------------------------
+#include <stdio.h>
+#include <semaphore.h>
+#include <pthread.h>
+/-------------------전역변수 모두가 사용가능------------------/
+sem_t        sem;  /*TODO: semaphore variable - sem */
+pthread_t   task[3];
+int params[3]={1,2,3};
+int arg;
+//----------------------------------------
+void Thread(void *param) {
+    int i = 0;
+    int val;
+  
+    while(1) {
+        sem_wait( &sem ); /* TODO: obtains semaphore, reduce it by 1 */
+		세마포어를 얻을 때 까지 대기//
+        arg=*((int *)param);
+        sem_post(&sem);
+	sleep(1);
+    }
+}
+//----------------------------------------
+void main( void )
+{
+    int i = 0, val;
+    sem_init( &sem, 0, 1//공유자원의 개수 3개면 3개 넣을 수 잇음); /* TODO: initialize unnamed semaphore */
+    for(i=0;i<3;i++)
+    	pthread_create( &task[i], NULL, (void*(*)(void*))Thread, &params[i] );
+	srand(1234);
+    while(1){
+	sem_wait( &sem );
+	sem_getvalue( &sem, &val ); 
+	printf( "arg=%d: value = %d\n", arg ,val );
+	sem_post(&sem);
+	sleep(rand()%3);
+   }
+    
+}  
+-----------------------------------------------------------------------------------
+@뮤텍스
+
+잠근놈이 풀어야 한다 잠근놈이 죽으면 영영 못품
+
+소유권, 재귀적 접근(recursive access):잠근걸 또잠그고 또잠그고 가능 대신 푸는걸 매칭해줘야함, 태스크 삭제 보호, 
+우선 순위 역전 회피 프로토콜 (뮤택스를 쓰는 동안 나보다 우선순위가 높은 경우가 발생하면 
+교착 상태가 일어날 수도 : 빨리써주는게 도우는거 
+내우선순위를 임시로 올려줌
+우선순위 계승/ 우선순위 상한)
+
+역전회피
+pthread_mutexattr_setprotocol( pthread_mutexattr_t *, int protocol )
+protocol-	PTHREAD_PRIO_NONE	- 사용안하겠다	
+		PTHREAD_PRIO_INHERIT   - 우선순위 계승
+		PTHREAD_PRIO_PROTECT   - 우선순위 상한
+pthread_mutex_setprioceiling( pthread_mutex_t *, prioceiling(최고값), &old_ceiling(원래 씰링값) ) 
+
+API
+PTHREAD_MUTEX_INITIALIZER
+pthread_mutex_lock( pthread_mutex_t * )
+pthread_mutex_trylock( pthread_mutex_t * )
+pthread_mutex_unlock( pthread_mutex_t * )
+pthread_self() (현재 스레드를 반환하는 함수)
+-----------------------------------------------------------------------------------
+#include <semaphore.h>
+#include <pthread.h>
+#include <sys/types.h>
+
+/* TODO: 뮤텍스 변수 선언 mutex, 선언과 동시에 초기화 */
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+int val;
+int arg1 = 0, arg2 = 1;
+//-------------------------------------------
+void *Thread( void* arg ) 
+{
+    int i, j;
+    
+    for( i = 0; ; i++ ) {
+        /* TODO: mutex 잠그기 */
+        pthread_mutex_lock( &mutex );
+        val = *(int*)arg;
+        printf( "thread %d: %dth iteration: val = %d\n", *(int*)arg, i, val);
+        /* TODO: mutex 풀기 */
+        pthread_mutex_unlock( &mutex );
+        //for ( j=0; j<1000000; j++ );
+        sleep(1);
+    }
+}
+//-------------------------------------------
+int main( void ) {
+    pthread_t  thread1, thread2;
+    pthread_attr_t attr; //스레스 속성 ->스케줄링 정체 우선순위 퀀텀(타임슬라이스) : 하나의 테스크가 씨피유 얻었을 때 실행할 시간 
+    
+    struct sched_param param //sched_param우선순위와 퀀텀이 들어가있음;
+    int policy //fifo roundrobin other;
+    
+    pthread_getschedparam( pthread_self(), &policy, &param );
+//현재값을 읽어와서 바꿀거만 바꿔줘야함
+    param.sched_priority = 1; //디폴트가 2임
+    policy = SCHED_RR; //shced_ROUND ROBIN shced_FIFO , shced_OTHER 3가지임..디폴트는 피포임
+    pthread_setschedparam( pthread_self(), policy, &param );
+    pthread_attr_init( &attr );
+    pthread_attr_setschedpolicy( &attr, SCHED_RR );
+    
+    pthread_create( &thread1, &attr, (void*(*)(void*))Thread, &arg1 );
+    pthread_create( &thread2, &attr, (void*(*)(void*))Thread, &arg2 );
+    
+    pthread_exit(0);
+    return 0;
+}
+-----------------------------------------------------------------------------
+쓰레드 속성 변환
+#include <stdio.h>
+#include <pthread.h>
+
+
+int thread_args[3] = { 0, 1, 2 };
+//------------------------------------------------------------------------------
+void* Thread( void *arg )
+{
+    int i;
+    
+    for ( i=0; i<1000; i++ ){
+        printf( "thread %d: %dth iteration\n", *(int*)arg, i);
+        sleep(1);
+    }
+    pthread_exit(0);  
+}
+//------------------------------------------------------------------------------
+int main( void )
+{
+    int i;
+    pthread_t threads[3];
+    
+    /*쓰레드 속성지정을 위한 변수 */
+    pthread_attr_t  thread_attrs;
+
+    /*스케줄링 정택 지정을 위한 구조체 */
+    /* 라운드로빈 시간할당량 설정 */
+    struct sched_param  param;
+
+   
+    for ( i=0; i<3; i++ ) {
+        /* TODO: 쓰레드 속성 초기화 */
+        pthread_attr_init( &thread_attrs );
+  
+        /* TODO: 스케줄링 정책 속성을 라운드로빈으로 설정 */
+        pthread_attr_setschedpolicy( &thread_attrs, SCHED_RR );
+
+        /* TODO: 쓰레드 속성에서 스케줄링 파라메터를 param구조체로 읽어들임 */
+        pthread_attr_getschedparam( &thread_attrs, &param );
+
+        /* TODO: 생성할 쓰레드의 우선순위를 20로 설정 */
+        param.sched_priority = 20;
+
+        /* 설정한 시간 단위로 실행 한다 */
+       
+        /* TODO: 변경한 우선순위를 쓰레드 속성에 추가 */
+        pthread_attr_setschedparam( &thread_attrs, &param );
+
+        
+        pthread_create( &threads[i], 
+                        &thread_attrs, 
+                        ( void* (*)(void*) )Thread, 
+                        &thread_args[i] );
+    }
+    
+    pthread_exit(0); /*메인 쓰레드 종료 */
+}
+----------------------------------------------------------------------------------
+@조건변수
+스레드가 동작할 상황이아니면 스스로 대기상태로 들어감.
+공유자원에 접근안접근이아니라
+상황을 보고 대기상태에 빠지고 다른놈이 꺠워줌
+배타적 접근이 아니므로 뮤텍스나 세마포어로 같이해줘야함//ㄷㄷ
+
+생산자 1초마다 하나씩 생산
+전역으로 20짜리 배열을 만듬 ...
+배타적으로 접근하게 세마포어나뮤텍스 만들어줌 
+소비자는 2초마다 하나씩 소비.
+배열이 꽉차면 조건변수를 이용해 생산자가 대기상태
+소비자들이 5개를 소비 : 빈칸이 5개가 되면 생산자가 깨어남
+생산자가 5개를 생산하면 다시 소비자가 깨어남.
+
+비디오 가게...슬립처럼 시간으로 제어가안됨..
+
+API
+
+PTHREAD_COND_INITIALIZER
+pthread_cond_wait( pthread_cond_t *, pthread_mutex_t * ) //파라메터에 아예 뮤텍스
+//자기스스로 무한정 대기상태에 빠짐.. 남이깨워저야함 
+//sleep처럼 근데 슬립은 시간제한있음
+pthread_cond_timedwait( pthread_cond_t *, pthread_mutex_t *, const struct timespec * ) 
+//남이 안깨워주면 스스로 깨어나게 시간 지정..타임스펙은 리눅스에서 지정하는 구조체 
+pthread_cond_signal(  pthread_cond_t * )
+//큐의 맨앞에 잇는 한놈만 깨움
+//웨잇중인 애들 링크드리스트로 큐만듬..
+pthread_cond_broadcast( pthread_cond_t * )
+//큐에 잇는 애들 전부다 깨움
+------------------------------------------------------------------------------
+#include <stdio.h>
+#include <pthread.h>
+
+pthread_t  thread;
+
+/* 뮤텍스 초기화 */
+pthread_mutex_t  mutex = PTHREAD_MUTEX_INITIALIZER;
+/* TODO: 조건 변수의 초기화 */
+pthread_cond_t  cond = PTHREAD_COND_INITIALIZER;
+
+/* 전역 변수 */
+int count = 0;
+//------------------------------------------------
+void* Thread ( void* arg ) {
+    
+    pthread_mutex_lock ( &mutex ); 
+    
+    /* TODO: count가 5가 될 때까지 기다림, 블록될 경우에는 뮤텍스를 푼다 */
+    while ( count < 5 ) {
+        printf( "count = %d: wait...\n", count );
+        pthread_cond_wait ( &cond, &mutex );
+    }
+//콘드웨잇을 하면 콘드웨잇한 친구가 잠근 뮤텍스를 자동으로 풀어줌 
+//다른애들이 공유자원에 접근할수 있게 콘드 웨잇에서 알아서 풀어줌
+//콘드웨잇이 깨어나면 뮤텍스를 다시 잠금..
+    printf( "count = %d: condition true.\n", count );
+    
+    pthread_mutex_unlock ( &mutex );
+}
+//------------------------------------------------
+void main ( void ) {
+    int i;
+    pthread_create( &thread, NULL, (void*(*)(void*))Thread, NULL );
+    
+    for ( i = 0; i < 10; i++ ) {
+        pthread_mutex_lock( &mutex );
+//메인이 다시 잠글수 있음 웨잇들어간애가 잠근거는 웨잇하는순간ㄴ풀리니까
+        count++;
+        /* TODO: 쓰레드에 시그널 보내기 */
+        pthread_cond_signal( &cond );
+//시그널을 날리면 콘드웨잇인 애가 깨어남.
+//대기상태인 애가없어도 에러는안남. 
+        printf( "condition signal %d\n", i );
+
+        pthread_mutex_unlock( &mutex );
+    }
+    pthread_exit(0);
+}
+
+//생산자는 계속 배열에 넣음
+//조건변수 2개 생산자용 소비자용..
+//배열이 차면 생산자용 콘드웨잇 호출
+//빈방이나 카운트를 통해 개수가 5개가 되면 콘드 시그널 날림
+//빈방이 20개->소비자용 콘드웨잇 
+//5개가 되면 콘드시그널

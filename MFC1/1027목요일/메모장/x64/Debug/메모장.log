@@ -1,0 +1,10 @@
+﻿  메모장.cpp
+  Generating Code...
+  Compiling...
+  메모장Dlg.cpp
+c:\users\kitri\desktop\mfc1\1027목요일\메모장\메모장dlg.cpp(204): warning C4129: '*': unrecognized character escape sequence
+c:\users\kitri\desktop\mfc1\1027목요일\메모장\메모장dlg.cpp(209): warning C4244: '=': conversion from 'intptr_t' to 'long', possible loss of data
+c:\users\kitri\desktop\mfc1\1027목요일\메모장\메모장dlg.cpp(268): warning C4244: '=': conversion from 'std::streamoff' to 'int', possible loss of data
+  Generating Code...
+  메모장.vcxproj -> C:\Users\KITRI\Desktop\MFC1\1027목요일\x64\Debug\메모장.exe
+  메모장.vcxproj -> C:\Users\KITRI\Desktop\MFC1\1027목요일\x64\Debug\메모장.pdb (Partial PDB)

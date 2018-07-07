@@ -1,0 +1,10 @@
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\bin\Debug\공장편의점.exe
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\bin\Debug\공장편의점.pdb
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.Properties.Resources.resources
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.csproj.GenerateResource.Cache
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.exe
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.pdb
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.Form1.resources
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.Form2.resources
+C:\Users\KITRI\Desktop\daae\WindowsApplication2\공장편의점\obj\Debug\공장편의점.Form3.resources

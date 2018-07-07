@@ -1,0 +1,38 @@
+﻿  1101Dlg.cpp
+c:\users\kitri\desktop\mfc1\1101\1101\1101dlg.cpp(186): error C2593: 'operator =' is ambiguous
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1362): note: could be 'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(const VARIANT &)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1354): note: or       'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(wchar_t)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1345): note: or       'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(char)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1339): note: or       'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(const unsigned char *)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1321): note: or       'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(const wchar_t *)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1313): note: or       'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(const char *)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\program files\microsoft visual studio 14.0\vc\atlmfc\include\cstringt.h(1298): note: or       'ATL::CStringT<char,StrTraitMFC_DLL<char,ATL::ChTraitsCRT<_CharType>>> &ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>>::operator =(const ATL::CStringT<char,StrTraitMFC_DLL<_CharType,ATL::ChTraitsCRT<_CharType>>> &)'
+          with
+          [
+              _CharType=char
+          ]
+  c:\users\kitri\desktop\mfc1\1101\1101\1101dlg.cpp(186): note: while trying to match the argument list '(CString, DWORD)'

@@ -1,0 +1,393 @@
+멀티테스킹
+유니테스킹 - 한번에 한 프로그램 (도스..ㅋㅋ)
+
+테스크 구현
+-스레드 or 프로세스
+
+프로세스는 데이터를 공유하지 않음..
+ipc-> 데이터를 공유하는 기법
+
+스레드는 힙이랑 전역변수영역 데이터를 공유함
+여러 스레드가 동시에 접근->데이터가 망가질수도->배타적 접근
+
+#include <unistd.h>
+ 
+int main(int argc, char *argv[])
+{
+        int i;
+ 
+        for (i = 0; i < argc; i++)
+                printf("argv[%d]: %s\n", i, argv[i]);
+        
+        exit(0);
+}
+----------------------------------------------------------
+#include <stdio.h>
+#include <unistd.h>
+ 
+extern **environ; //정보의 종류 = 값
+int main()
+{
+        int i;
+ 
+        for (i = 0; environ[i] != NULL; i++)
+                printf("environ[%d]: %s\n", i, environ[i]);
+}
+---------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+extern **environ;
+char glob_var[]="HOBBY=swimming";//environ은 정보의종류=값 형태니까       /* global variable */
+void addone()
+{
+        char auto_var[10];              /* automatic variable */
+        strcpy(auto_var, "LOVER=wk");
+        putenv(auto_var);
+}
+int main()
+{
+        int i;
+        /* show inherited environment variables */
+        for (i = 0; environ[i] != NULL; i++)
+                printf("environ[%d]: %s\n", i, environ[i]);
+        
+        putenv(glob_var); /* put two new environment variables *///environ에 문자열추가
+        addone();
+        printf("My hobby is %s\n", getenv("HOBBY"));
+        printf("My lover is %s\n", getenv("LOVER"));
+        strcpy(glob_var+6, "fishing"); //glob_var은 주소 + 6바이트 이동한 값/* modify environment variable */
+        for (i = 0; environ[i] != NULL; i++) /* show result */
+                printf("environ[%d]: %s\n", i, environ[i]);
+}
+
+
+---------------------------------------------------------------------------
+- 모든 프로세스는 음이 아닌 정수인 유일한 프로세스 ID를 가진다.
+struct process (프로세스 번호, 상태 ...)
+첫번쨰 프로세스 -> init프로세스
+shell을 시작하면 forc가 되고 exec으로 forc의 코드를 바꿔줌
+shell 이 부모가 됨
+
+ready----cpu ----------------- wait ------- 종료
+task1    run --sleep or I.O.-- 대기  
+task2
+task1 대기가 풀리면 다시 ready에 줄서서 감
+
+
+getpid()   : 호출한 프로세스의 프로세스 ID 리턴
+getppid() :	호출한 프로세스의 부모 프로세스 ID 리턴
+
+getuid()   : 호출한 프로세스의 실제 사용자 ID(real user ID) 리턴
+geteuid() : 호출한 프로세스의 유효 사용자 ID(effective user ID) 리턴
+getgid()   : 실제 그룹 ID(real group ID) 리턴
+getegid() : 유효 그룹 ID(effective group ID) 리턴
+-----------------------------------------------------------------------------
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
+ 
+int main()
+{
+        pid_t pid;
+ 
+        sleep(5);
+        printf("\nProcess ID       = %d\n", pid = getpid());
+        printf("Parent process ID  = %d\n", getppid());
+        printf("Real User ID       = %d\n", getuid());
+        printf("Effective User ID  = %d\n", geteuid());
+        printf("Real group ID      = %d\n", getgid());
+        printf("Effective group ID = %d\n", getegid());
+}
+-----------------------------------------------------------------------------------
+fork()의 반환값
+부모는 생성한 자식의 번호 pid>0
+자식은 0을 반환.
+반환한 값을 가지고 부몬지 자식인지 알 수 있다.
+
+포크의 반환값을 주는데부터 실행
+
+#include <stdio.h>
+#include<unistd.h>
+#include<sys/types.h>
+
+main()
+{
+    pid_t pid;
+    printf("pid = %d, ppid = %d\n",getpid(),getppid());
+    
+    pid = fork();	
+// 포크는 똑같은 코드가 두개가 실행됨.다섯개 만들면 다섯개가 다 실행됨 그냥 함수가아님
+//최초의 프로세스 번호 pid =1 init process 
+//부모가없는 프로세스 ->고아 프로세스
+//부모가 자식보다 먼저 죽으면 자식 프로세스는 init process의 양자로 들어감
+//자식의 부모가 1이 됨
+//자식이 종료할때까지 부모가 기다리는 함수 wait
+//wait(NULL) 자식이 죽을때까지 부모가 안죽음. 자식 상태값을 받음(exit같은)
+
+
+    if(pid<0){
+	printf("프로세스 생성실패\n");
+    }else if(pid==0){
+	printf("자식 프로세스\n");
+    }else{
+	printf("부모 프로세스\n");
+	wait(NULL);
+    }
+    printf("pid = %d, ppid = %d\n",getpid(),getppid());
+//자식의 ppid나 부모의 pid나 같아야함
+ready           cpu           wait
+부모----------- run--sleep()--부모->자식이 프로세스로 들어감
+자식
+}
+-----------------------------------------------------------------------------------
+#include <sys/types.h>
+#include <unistd.h>
+
+static int glob = 6;        /* external variable in initialized data */
+char buf[] = "a write to stdout\n";
+
+int main(void)
+{
+        int     var;        /* automatic variable on the stack */
+        pid_t   pid;
+
+        var = 88;
+        if (write(STDOUT_FILENO, buf, sizeof(buf)-1) != sizeof(buf)-1)
+//stdout_fileno -> fd =1 과 같음
+//write는 저수준 파일 쓰는 함수
+                printf("write error");
+        printf("before fork\n");        /* we don't flush stdout */
+
+        if ( (pid = fork()) < 0)       printf("fork error");
+        else if (pid == 0) {            /* child */
+                glob++;                 /* modify variables */
+                var++;
+        } else
+                sleep(2);               /* parent */
+
+        printf("pid = %d, glob = %d, var = %d\n", getpid(), glob, var);
+
+//전역변수 영역 glob++해줘도 부모한테는 영향 없음.
+//프로세스는 메모리가 완전히 분리되어있음
+
+
+부모       	자식		자식은 부모의 메모리를 
+--------	------------	그대로 복사해서 text실행
+text		text
+--------	------------	
+
+var,glob	var++,glob++
+--------	------------	
+--------	------------
+--------	------------
+       exit(0);
+}
+---------------------------------------------------------------------------
+#include <sys/types.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <string.h>
+
+static int global = 6;        
+char *filename = "temp1";
+char buf[40];
+
+int main(void)
+{
+        int fd,pid;
+        int     local;     
+
+        local = 88;
+        if((fd = open(filename,O_RDWR | O_CREAT,0777))<0){
+            fprintf(stderr,"Error, cannot create file\n");
+            exit(0);
+        }
+        sprintf(buf,"a stdout by write function\n");
+        write(STDOUT_FILENO, buf, strlen(buf);
+        
+        printf("before fork\n");        /* we don't flush stdout */
+        if ((pid = fork()) < 0)
+                printf("fork error");
+        else if (pid == 0) 
+       { 
+                global++;                 /* modify variables */
+                local++;
+        } 
+        else   
+                sleep(2);               /* parent */
+
+        sprintf(buf,"pid = %d, global = %d, local = %d\n", getpid(), global, local);
+        write(fd,buf,strlen(buf)); //두개의 프로세스가 듀프안하면 그냥 알아서 따로염..
+	//부모 자식이 같은파일 따로따로 적어줌
+        exit(0); 
+}
+vi temp1
+cat temp1  //뿌려주는것
+-----------------------------------------------------------------------------------
+#include <stdio.h>
+main()
+{
+        char first,last,ch;
+        int pid,i;
+    
+        /* parent */
+        if((pid=fork())>0)
+        {
+                first = 'A';
+                last  = 'Z';
+        }
+        else if(pid==0)
+        {
+                first = 'a';
+                last  = 'z';   
+               
+        }
+    
+        for(ch=first;ch<=last;ch++)
+        {
+                write(1,&ch,1);
+		sleep(1);
+        }
+} 
+-------------------------------------------------------------------------------
+vfork()->부모는 대기상태로 빠지고 자식이 부모의 메모리를 씀
+코드가 바뀌기전에는 부모의 메모리에서 하다가
+코드가 바뀌면 새로움 메모리 할당 받음
+
+#include <sys/types.h>
+#include <unistd.h>
+
+static int glob = 6;        /* external variable in initialized data */
+
+int main(void)
+{
+        int     var;        /* automatic variable on the stack */
+        pid_t   pid;
+
+        var = 88;
+       printf("before fork\n");  
+
+        if ( (pid = vfork()) < 0)
+                printf("fork error");
+        else if (pid == 0) 
+        { 
+                glob++;                 
+                var++;
+                _exit(0);	//저수준 함수
+        } 
+자식은 종료되고 부모가 깨어남
+그래도 자식이 부모의 메모리를 공유해서 증가시켰으므로
+부모의 변수는 증가되어있음.
+        printf("pid = %d, glob = %d, var = %d\n", getpid(), glob, var);
+        exit(0);
+}
+-----------------------------------------------------------------------------
+
+프로세스 종료
+
+정상 종료
+return으로 끝내거나 exit으로 끝내거나 정상종료!
+
+     - main 함수로부터의 리턴 (exit 함수를 호출하는 것과 동일)
+     - exit 또는 _exit 함수의 호출 (표준 C 라이브러리와 시스템 호출)
+     - 종료 상태 값을 명시적으로 지정
+
+비정상 종료
+-crtl+c 포그라운드로 도는 프로세스에 시그널
+     - 자신이 abort 시스템 호출 (SIGABRT 시그널)
+     - 커널이 발생한 시그널(signal)에 의한 종료 
+        (0으로 나눈 경우, 잘못된 메모리 참조 등)
+     - 커널이 종료 상태값을 생성
+------------------------------------------------------------------------------
+pid_t wait(int *statloc); //pid_t는 int나 unsigned int로 줘도됨..ㅋ
+//pid_t 값 자식 pid값 반환
+//프로세스가 자식중의 하나가 죽을 때 까지 부모가 기다려줌
+//return 3이런값이나 exit(0)값을 받음
+exit() : 하위8비트 종료상태
+signal : 상위8비트 시그널 번호
+SIGSTP나 SIGSTOP 시그널 : 상위8비트는 0x7f, 하위8비트는 시그널 번호
+
+매크로함수
+
+WIFEXITED(status)		정상적으로 종료한 경우에 참 값을 리턴
+WEXITEDSTATUS(status)		exit 함수의 인자에서 하위 8 비트 값을 리턴
+WIFSIGNALED(status)		시그널에 의해 종료한 경우에 참 값을 리턴
+WTERMSIG(status)		시그널 번호를 리턴
+WCOREDUMP(status)		코어 파일이 생성된 경우에 참 값을 리턴
+WIFSTOPPED(status)		실행이 일시 중단된 경우에 참 값을 리턴
+WSTOPSIG(status)		실행을 일시 중단시킨 시그널 번호를 리턴
+
+-------------------------------------------------------------------------------
+#include <sys/types.h>
+#include <sys/wait.h>
+
+void term_stat(int status)
+{
+    if(WIFEXITED(status))
+       printf("normal termination, exit status = %d\n",WEXITSTATUS(status));
+
+
+
+    else if(WIFSIGNALED(status))
+       printf("abnormal termination, signal number = %d%s\n",WTERMSIG(status),
+#ifdef  WCOREDUMP
+    WCOREDUMP(status) ? " (core file generated)" : "");
+#else
+    "");//core dump가 정의 되어있으면 실행하고 아니면 종료
+#endif
+
+---------------------------------------else if 여기까지 
+
+    else if(WIFSTOPPED(status))
+         printf("child stopped, signal number = %d\n",WSTOPSIG(status));
+}
+
+void err_end(char *msg){
+    printf("% error\n",msg);
+    exit(1);
+} 
+int main(void)
+{
+        pid_t   pid;
+        int     status;
+
+        if ((pid = fork()) < 0)
+                err_end("fork");
+        else if (pid == 0)             /* child */
+                exit(7);
+
+        if (wait(&status) != pid)   //방금 죽은 자식이 wait()의 반환값   /* wait for child */
+                err_end("wait");
+	printf("부모 pid : %d",getpid());
+        term_stat(status);               /* and print its status */
+
+        if ( (pid = fork()) < 0)
+                err_end("fork");
+        else if (pid == 0)             /* child */
+                abort();               /* generates SIGABRT */
+
+        if (wait(&status) != pid)      /* wait for child */
+                err_end("wait");
+        term_stat(status);             /* and print its status */
+
+
+	if ( (pid = fork()) < 0)
+                err_end("fork");
+        else if (pid == 0)             /* child */
+                status /= 0;           /* divide by 0 generates SIGFPE */
+ 
+        if (wait(&status) != pid)       /* wait for child */
+                err_end("wait error");
+        term_stat(status);               /* and print its status */
+        exit(0);
+}
+
+
+
+exec 새로운 코드로 text를 바꿔주면 메모리르 새로 할당해줌.
+
+
+
+
+

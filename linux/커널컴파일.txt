@@ -1,0 +1,44 @@
+0. 커널소스다운로드
+wget https://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.31.tar.bz2
+
+1. 커널압축해제
+tar xvfj linux-2.6.31.tar.bz2
+//tar 압축해제
+
+2. 의존성 제거
+make mrproper
+
+3. 커널설정
+make menuconfig
+
+4. 컴파일
+make
+//커널 컴파일
+
+5. make modules_install
+
+6. make install
+=>설치오류시
+yum install isomd5sum
+yum install mkinitrd
+
+http://rpm.pbone.net/index.php3/stat/4/idpl/18928102/dir/fedora_12/com/isomd5sum-1.0.5-3.fc12.i686.rpm.html
+에서 isomd5sum-1.0.5-3.fc12.i686.rpm다운로드한뒤 설치
+>rpm -Uvh isomd5sum-1.0.5-3.fc12.i686.rpm
+
+http://rpm.pbone.net/index.php3/stat/4/idpl/13221648/com/mkinitrd-6.0.93-1.fc12.i686.rpm.html
+에서 mkinitrd-6.0.93-1.fc12.i686.rpm다운로드한뒤 설치
+>rpm -Uvh mkinitrd-6.0.93-1.fc12.i686.rpm
+
+다시 make install
+
+//보드 ->암드 용 gcc 리눅스 파일 원시 파일 컴파일->bash.어쩌고에 패스등록
+//make 컴파일 ->제트이미지 (리눅스 커널이미지) 비즈이미지 ->보드 롬에 얹기 (부트로더에 의해실행)
+//부트로더->커널 컴파일 이미지
+//램에 얹으면 껏다키면 다시깔면됨ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+
+//얘를해놓으면
+//시스템콜 함수 등록해서 커널자체에서 수정된 곳만 컴파일함
+
+//모듈프로그래밍 -> 
+//디바이스 ->모듈프로그래밍의 일환

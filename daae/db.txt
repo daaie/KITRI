@@ -1,0 +1,35 @@
+            DBConnect db = new DBConnect();
+            OleDbConnection conn =db.conn("hr","hr","xe"); //xe는 작업관리자->서비스->오라클서비스뒤에 붙은 문자
+            string sql;
+            try
+            {
+                conn.Open();
+                //sql = "insert into product values(seq_product.nextval,'양파링',1000,100)"; //추가
+                sql = "update product set name='초코송이',price=1000,quantity=100 where num=4"; //수정
+                OleDbCommand cmd = new OleDbCommand(sql, conn);
+                int idx=cmd.ExecuteNonQuery();  //쓰기동작은 넌쿼리, 읽기동작은 리드임
+                Console.WriteLine(idx);
+                
+                sql = "select * from product";
+                cmd.CommandText = sql;
+                OleDbDataReader read = cmd.ExecuteReader(); //디비에서 불러온걸 메모리에 저장함..
+                Console.WriteLine(read.FieldCount);
+                while (read.Read()) //다음줄로 이동이 정상적이면 true 이동이 안되면 false임 
+                {
+                    Console.WriteLine("{0},{1},{2},{3}", read.GetValue(0), read.GetString(1), read.GetValue(2), read.GetValue(3));
+                }
+
+                read.Close();
+            }
+            catch (Exception ex) //예외의 최상위 클래스 Exception임
+            {
+                Console.WriteLine("에러발생{0}", ex.Message);
+            }
+            finally //예외의 유무와 상관없이 무조건 발생함
+            {
+                if (conn != null) //연결이 무한정이지 않음 사용안하면 dbconnection conn끊어줘야함
+                {
+                    conn.Close();
+                    Console.WriteLine("데이터베이스연결해제");
+                }
+            }

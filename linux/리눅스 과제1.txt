@@ -1,0 +1,12 @@
+헤더-주소록 이름 전화 주소
+
+main.c
+add.c
+search.c
+edit.c
+del.c
+print_all.c
+
+makefile
+
+리눅스 내부 테이블은 이중 링크드 리스트 임

@@ -1,0 +1,210 @@
+//시스템 콜함수 -> 소프트웨어 인터럽트
+//소프트웨어 인터럽트 -> 테이블 82번
+//unistd_32.h 테이블 번호 등록 337번 c파일서 호출할때 씀.
+
+1. 시스템 콜 번호 추가
+linux-2.6.31/arch/x86/include/asm/unistd_32.h (pc용)파일에 다음 추가
+linux/include/asm-arm/unistd.h (보드용)
+#define __NR_newcall 337
+총 개수	338
+
+2.시스템 콜 함수 등록
+linux-2.6.31/arch/x86/kernel/syscall_table_32.S파일에 함수명 추가
+linux/arch/arm/kernel/calls.S
+.long sys_newcall
+//추가한게 어셈블리 파일임
+
+
+3.시스템 콜 함수 구현
+linux-2.6.31/arch/x86/kernel># vi newcall.c
+linux/kernel>#vi newcall.c
+#include<linux/kernel.h>
+//c가 아니라 S파일(어셈블리) 등록했으므로 asmlinkage라고 등록해줘야함
+asmlinkage int sys_newcall(){
+  printk("hello, kernel\n");
+  return 21;
+}
+//printk는 커널함수이기 때문
+//커널에서 사용하는 메모리와 
+//어플리케이션에서 사용하는 메모리 다름
+//커널에서 출력한 명령어가 콘솔에 안보일수도 있음
+//이때는 d명령으로 출력할수있음..
+//d메세지
+
+
+4.Makefile 수정
+linux-2.6.31/arch/x86/kernel/Makefile에 다음 추가
+obj-y	+= newcall.o
+
+5.커널 컴파일
+linux-2.6.31># make bzImage
+//수정된 거만 컴파일하는거임
+
+linux-2.6.31># make install
+
+6. 재부팅 후 테스트 소스 작성 및 컴파일 실행
+--newcallTest.c--
+#include<linux/unistd.h>
+#include<stdio.h>
+
+#define NEWCALL 337
+:
+int main(){
+  int i;
+  printf("app start\n");
+  i=syscall(NEWCALL);
+  printf("app i=%d\n", i);
+  return 0;
+}
+
+gcc -I/usr/src/linux-2.6.31/include newcallTest.c -o newcallTest
+//기본위치가 씨디로 설치한거기 때문에 
+//내가 등록한 시스템 콜이 있는 곳을 알려줘야함. 
+//-I 옵션을 주고 경로를 줘서 컴파일 해야함.
+
+//dmesg 하면 커널에서 출력한걸 확인할 수 잇움
+//다른 커널소스에서 출력한것도 남아있음ㅋ
+================================================
+nfsroot>#vi newcall.c
+
+#include<stdio.h>
+#include<linux/unistd.h>
+_syscall0(int, newcall);
+
+void main(){
+  int i;
+  printf("app start\n");
+  i=newcall();
+  printf("app i=%d\n", i);
+}
+
+#arm-linux-gcc -I /root/PXA~~/kernel/linux/include newcall.c -o newcall
+
+==================================
+asm/uaccess.h
+
+put_user(x, ptr) : 커널 영역의 데이터를 사용자 영역으로 복사
+get_user(x, ptr) : 사용자 영역의 데이터를 커널 영역으로 복사
+copy_to_user(void __user *to, const void *from, unsigned long n)
+:커널 영역의 블록 데이터를 사용자 영역으로 복사
+copy_from_user(void *to, const void _user *from, unsigned long n)
+:사용자 영역의 블록 데이터를 커널 영역으로 복사
+
+
+vi 1linux-2.6.~/arch/x86/kernel/newcall2.c
+
+#include <linux/kernel.h>
+#include <asm/uaccess.h>
+asmlinkage int sys_newcall2(int a, int b, int *to_user){
+  int sum=0;
+  printk("kernel:a=%d, b=%d\n, a,b);
+  sum=a+b;
+  put_user(sum, to_user);
+  return 21;
+}
+
+--newcall2Test.c--
+#include<linux/unistd.h>
+#include<stdio.h>
+
+#define NEWCALL2 338
+
+int main(){
+  int i, a=22, b=10, from_kernel;
+  printf("app start\n");
+  i=syscall(NEWCALL2,a, b, &from_kernel);
+  printf("app 결과코드=%d, sum=%d\n", i, from_kernel);
+  return 0;
+}
+
+gcc -I/usr/src/linux-2.6.31/include newcall2Test.c -o newcall2Test
+
+==============newcall2Test.c<보드>===========================
+nfsroot>#vi newcall2.c
+
+#include<stdio.h>
+#include<linux/unistd.h>
+_syscall3(int, newcall2, int, a, int, b, int*, to_user);
+
+void main(){
+  int i, a=22, b=10, from_kernel;
+  printf("app start\n");
+  i=newcall2(a, b, &from_kernel);
+  printf("app 결과코드=%d, sum=%d\n", i, from_kernel);
+}
+
+#arm-linux-gcc -I /root/PXA~~/kernel/linux/include newcall.c -o newcall
+
+--newcall3.c----------------
+#include <linux/kernel.h>
+#include <asm/uaccess.h>
+struct my_data{
+  int a;
+  int b;
+  int c;
+};
+asmlinkage int sys_newcall3(struct my_data *block){
+  int a, b;
+  struct my_data data;
+  copy_from_user(&data, block, sizeof(struct my_data));
+  a=data.a;
+  b=data.b;
+  data.a=a+b;
+  data.b=a-b;
+  data.c=a%b;
+  copy_to_user(block, &data, sizeof(struct my_data));
+  return 21;
+}
+
+--newcall3Test.c--
+#include<linux/unistd.h>
+#include<stdio.h>
+
+#define NEWCALL3 339
+struct my_data{
+  int a;
+  int b;
+  int c;
+};
+int main(){
+  struct my_data data;
+  int i;
+  data.a=1;
+  data.b=2;
+  data.c=0;
+  printf("app start\n");
+  i=syscall(NEWCALL3,&data);
+  printf("app 결과코드=%d, data.a=%d, data.b=%d, data.c=%d\n", i, data.a, data.b, data.c);
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

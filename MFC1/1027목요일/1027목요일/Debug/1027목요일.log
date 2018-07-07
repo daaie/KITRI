@@ -1,0 +1,10 @@
+﻿C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (1027목요일.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  1027목요일Dlg.cpp
+c:\users\kitri\desktop\mfc1\1027목요일\1027목요일\1027목요일dlg.cpp(191): warning C4477: 'sprintf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'CString'
+c:\users\kitri\desktop\mfc1\1027목요일\1027목요일\1027목요일dlg.cpp(191): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\kitri\desktop\mfc1\1027목요일\1027목요일\1027목요일dlg.cpp(196): warning C4477: 'sprintf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'CString'
+c:\users\kitri\desktop\mfc1\1027목요일\1027목요일\1027목요일dlg.cpp(196): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  1027목요일.vcxproj -> C:\Users\KITRI\Desktop\MFC1\1027목요일\Debug\리스트컨트롤.exe
+  1027목요일.vcxproj -> C:\Users\KITRI\Desktop\MFC1\1027목요일\Debug\리스트컨트롤.pdb (Partial PDB)

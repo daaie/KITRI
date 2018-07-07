@@ -1,0 +1,403 @@
+모듈은 커널에 붙였다 뗐다
+
+1. 모듈 개발 절차
+1) 모듈 프로그램을 작성
+2) 모듈 프로그램 컴파일
+3) 모듈 로드(insmod 명령)
+4) 로드된 모듈 확인(lsmod)
+5) 모듈제거(rmmod)
+
+2. 모듈 프로그램의 구성
+#include <linux/kernel.h>
+#include <linux/module.h>
+//모듈을 로드할 때 수행되야하는 초기화 루틴
+int __init init_module(void){
+	//초기화 루틴
+	return 0;
+}
+
+//모듈을 제거할 때 수행되야하는 정리 루틴
+void __exit cleanup_module(void){
+	//정리 루틴
+}
+
+MODULE_LICENSE("GPL");
+
+3. 실습1 - hello
+1)moduleTest/test1 디렉토리 생성해서 그 디렉토리로 이동
+2)모듈 소스 작성
+moduleTest/test1>vi hello.c
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+
+ //초기화 루틴 모듈을 붙일때 실행
+ int __init init_hello(void){ //함수 호출 
+	printk("module message : hello\n");
+	return 0;
+ }
+
+ //종료 루틴 모듈을 뗄때 실행
+ void __exit exit_hello(void){
+	printk("module message : module stop\n");
+ }
+ module_init(init_hello);
+ module_exit(exit_hello);
+ MODULE_LICENSE("GPL");
+
+3)Makefile 작성
+moduleTest/test1> vi Makefile
+
+//////////////중복///////////////////KERNELDIR = /lib/modules/$(shell uname -r)/build
+
+obj-m = hello.o
+
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+
+default:
+	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
+//$(MAKE)는 ㅈgcc라고 보면됨
+clean:
+	rm -rf *.ko		//모듈파일 모듈 실행파일
+	rm -rf *.mod.*
+	rm -rf .*.cmd
+	rm -rf *.o
+
+4)컴파일
+moduleTest/test1>make
+
+5)lsmod 현재 모듈 확인
+//커널에 붙어있는 모듈를 확인
+  insmod hello.ko 모듈 추가
+//insmod 현재 커널에 붙여줌
+  dmesg
+  lsmod로 hello 추가됨 확인
+  rmmod hello 모듈 제거
+  dmesg
+6)insmod 수행시 init 루틴 실행 안되면
+linux-2.6.32.60>make menuconfig
+	[*]Enable loadable module support
+		[*]Forced module unloading
+		[*]Automatic kernel module loading
+
+4. 실습2 - 상호 모듈 참조
+1)moduleTest/test2 디렉토리 생성해서 그 디렉토리로 이동
+2)모듈 소스 작성
+moduleTest/test2>vi callee.c
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+
+ //초기화 루틴
+ int __init init_callee(void){
+	printk("module message : callee\n");
+	return 0;
+ }
+
+ //종료 루틴
+ void __exit exit_callee(void){
+	printk("module message : callee module stop\n");
+ }
+ int add(int a, int b){
+	printk("module message : callee module add\n");
+	return a+b;
+ }
+ int sub(int a, int b){
+	printk("module message : callee module sub\n");
+	return a-b;
+ }
+ 
+ EXPORT_SYMBOL(add);
+ EXPORT_SYMBOL(sub);
+ 
+ module_init(init_callee);
+ module_exit(exit_callee);
+ MODULE_LICENSE("GPL");
+
+moduleTest/test2>vi caller.c
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+
+ int add(int, int);
+ int sub(int, int);
+
+ //초기화 루틴
+ int __init init_caller(void){
+	printk("module message : caller\n");
+	printk("module message add:%d\n", add(2,3));
+	printk("module message sub:%d\n", sub(3,1));
+	return 0;
+ }
+
+ //종료 루틴
+ void __exit exit_caller(void){
+	printk("module message : caller module stop\n");
+ }
+
+ module_init(init_caller);
+ module_exit(exit_caller);
+ MODULE_LICENSE("GPL");
+
+3)Makefile 작성
+moduleTest/test2> vi Makefile
+
+obj-m = callee.o caller.o
+
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+
+default:
+	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
+
+4)컴파일
+moduleTest/test2>make
+----<pxa255 보드용>------------------------------------------
+INCLUDEDIR := /root/PXA255-Pro/kernel/linux-2.4.19-pro3_usb20/include
+CROSS_COMPILE := arm-linux-
+
+CFLAGS := -DEXPORT_SYMTAB -D__KERNEL__ -DMODULE -Wall -O2 -I$(INCLUDEDIR)
+
+CC = $(CROSS_COMPILE)gcc
+LD = $(CROSS_COMPILE)Id
+
+all :callee.o caller.o
+
+callee.o : 
+$(CC) $(CFLAGS) -c callee.c -o callee.o
+
+caller.o:
+$(CC) $(CFLAGS) -c caller.c -o caller.o
+
+clean:
+rm -f *.o *.~
+---------------------------------------------------------------
+
+5)모듈 추가
+insmod callee.ko
+insmod caller.ko
+
+6)모듈 참조 확인
+lsmod
+Module	size	Used	by
+caller	123	0	
+callee	123	1	caller
+
+5. 실습3 - 매개변수 전달
+module_param(var, type, perm)	//param:변수, 타입, 권한
+타입 : byte, short, ushort, int, uint, long, ulong, charp, bool
+
+<param.c>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+
+ int a;
+ char *str;
+ module_param(a, int, 0);
+ module_param(str, charp, 0);
+
+ //초기화 루틴
+ int __init init_param(void){
+	printk("module message : param\n");
+	printk("module message param a:%d\n", a);
+	printk("module message param str:%s\n", str);
+	return 0;
+ }
+
+ //종료 루틴
+ void __exit exit_param(void){
+	printk("module message : param module stop\n");
+ }
+
+ module_init(init_param);
+ module_exit(exit_param);
+ MODULE_LICENSE("GPL");
+
+실행>insmod param.ko a=10 str=aaa
+ 파라메터 안넣어주면(숫자는 0, 문자열은 null)
+
+<param2.c>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+
+ int b[]={1,2,3,4,5};
+ module_param_array(b, int, NULL, 0);
+
+ //초기화 루틴
+ int __init init_param2(void){
+	printk("module message : param2\n");
+	printk("module message param2 array:%d, %d, %d, %d, %d\n", b[0], b[1], b[2], b[3], b[4]);
+	return 0;
+ }
+
+ //종료 루틴
+ void __exit exit_param2(void){
+	printk("module message : param2 module stop\n");
+ }
+
+ module_init(init_param2);
+ module_exit(exit_param2);
+ MODULE_LICENSE("GPL");
+
+실행>insmod param2.ko b=11,22,33,44,55
+ 파라메터 안넣어주면(배열 초기값 1,2,3,4,5)
+
+=====================================================================
+문자 디바이스 작성
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+
+//함수 정의
+int device_open(..){...}
+int device_release(..){...}
+ssize_t device_read(..){...}
+ssize_t device_write(..){...}
+
+//구조체 함수 등록
+static struct file_operations device_fops={  //구조체 변수 선언 및 초기화
+ ...
+ ssize_t (*read)(..);
+ ssize_t (*write)(..);
+ ...
+}
+
+//모듈 초기화 루틴
+int device_init(void){...}
+
+//모듈 정리 루틴
+void device_exit(void){...}
+
+module_init(device_init);
+module_exit(device_exit);
+MODULE_LICENSE("GPL");
+
+실습
+moduleTest/test5>vi virtual_device.c
+#include <linux/init.h>
+#include <linux/kernel.h>
+#include <linux/module.h>
+#include <linux/fs.h>
+#include <asm/uaccess.h>
+#include <linux/slab.h>
+
+static char *buffer = NULL;
+
+int virtual_device_open(struct inode *inode, struct file *filp){
+  printk(KERN_ALERT "virtual_device open\n");
+  return 0;
+}
+int virtual_device_release(struct inode *inode, struct file *filp){
+  printk(KERN_ALERT "virtual_device release\n");
+  return 0;
+}
+
+ssize_t virtual_device_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos){
+  printk(KERN_ALERT "virtual_device write\n");
+  strcpy(buffer, buf);
+  return count;
+}
+
+ssize_t virtual_device_read(struct file *filp, const char *buf, size_t count, loff_t *f_pos){
+  printk(KERN_ALERT "virtual_device read\n");
+  copy_to_user(buf, buffer, 1024);
+  return count;
+}
+
+static struct file_operations vd_fops={
+  .read = virtual_device_read,
+  .write = virtual_device_write,
+  .open = virtual_device_open,
+  .release = virtual_device_release  //close
+};
+
+int __init virtual_device_init(void){
+  if(register_chrdev(345, "virtual_device", &vd_fops)<0)
+//디바이스 드라이버 등록
+	printk(KERN_ALERT "driver init failed\n");
+  else
+	printk(KERN_ALERT "driver init successful\n");
+
+  buffer = (char*)kmalloc(1024, GFP_KERNEL); //GFP 는 메모리 할당 모드
+  if(buffer!=NULL)
+	memset(buffer, 0, 1024);
+  return 0;
+}
+
+void __exit virtual_device_exit(void){
+ /* if(unregister_chrdev(345, "virtual_device")<0)
+	printk(KERN_ALERT "driver exit failed\n");
+  else
+	printk(KERN_ALERT "driver exit successful\n");
+  kfree(buffer);
+*/
+  unregister_chrdev(345, "virtual_device");
+  kfree(buffer);
+  printk(KERN_ALERT "driver exit successful\n");
+}
+
+module_init(virtual_device_init);
+module_exit(virtual_device_exit);
+MODULE_LICENSE("GPL");
+
+moduleTest/test5>vi virtual_device_app.c
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/fcntl.h>
+
+int main(){
+  int dev;
+  char buff[1024];
+  dev = open("/dev/virtual_device", O_RDWR);
+  printf("dev:%d\n", dev);
+  if(dev<0){
+	printf("device open error\n");
+	return -1;
+  }
+  write(dev, "1234", 4);
+  read(dev, buff, 4);
+  printf("read from device:%s\n", buff);
+  close(dev);
+  return 0;
+}
+
+moduleTest/test5>vi Makefile
+
+/////////////////////중복////////////////KERNELDIR = /lib/modules/$(shell uname -r)/build
+
+obj-m := virtual_device.o
+
+TARGETS := virtual_device_app
+
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+
+default:$(TARGETS)
+	$(MAKE) -C $(KDIR) SUBDIRS=$(PWD) modules
+
+CC := /usr/bin/gcc
+
+%.c%:
+	${CC} -o $@ $^
+
+clean:
+	rm -rf *.ko
+	rm -rf *.mod.*
+	rm -rf .*.cmd
+	rm -rf *.o
+	rm -rf .tmp_versions
+
+moduleTest/test5>make
+*디바이스 파일 생성(mknod 생성할 디바이스 파일 명, 문자c/블럭b, 주번호, 부번호) 
+moduleTest/test5>mknod /dev/virtual_device c 253 0
+//버츄얼 디바이스->tty같은 장치이름..c ->캐릭터 디바이스 b-=>블락디바이스
+//253 주번호 0은 부번호
+//주번호는 /dev에서 ls -all에 없는 번호...253
+
+moduleTest/test5>ls -l /dev/virtual_device
+moduleTest/test5>insmod virtual_device.ko
+moduleTest/test5>./virtual_device_app
+moduleTest/test5>rmmod virtual_device
