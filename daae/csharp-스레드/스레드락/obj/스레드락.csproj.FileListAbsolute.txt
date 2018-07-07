@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\스레드\스레드락\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\스레드\스레드락\bin\Debug\스레드락.exe
+C:\Users\KITRI\Desktop\daae\스레드\스레드락\bin\Debug\스레드락.pdb
+C:\Users\KITRI\Desktop\daae\스레드\스레드락\obj\Debug\스레드락.exe
+C:\Users\KITRI\Desktop\daae\스레드\스레드락\obj\Debug\스레드락.pdb

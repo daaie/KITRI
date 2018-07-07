@@ -1,0 +1,7 @@
+C:\Users\KITRI\Desktop\daae\DB\고객관리\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\DB\고객관리\bin\Debug\고객관리.exe
+C:\Users\KITRI\Desktop\daae\DB\고객관리\bin\Debug\고객관리.pdb
+C:\Users\KITRI\Desktop\daae\DB\고객관리\obj\Debug\고객관리.exe
+C:\Users\KITRI\Desktop\daae\DB\고객관리\obj\Debug\고객관리.pdb
+C:\Users\KITRI\Desktop\daae\csharp-DB\고객관리\obj\Debug\고객관리.exe
+C:\Users\KITRI\Desktop\daae\csharp-DB\고객관리\obj\Debug\고객관리.pdb

@@ -1,0 +1,7 @@
+C:\Users\KITRI\Desktop\daae\스레드\스레드\bin\Debug\스레드.exe
+C:\Users\KITRI\Desktop\daae\스레드\스레드\bin\Debug\스레드.pdb
+C:\Users\KITRI\Desktop\daae\스레드\스레드\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\스레드\스레드\obj\Debug\스레드.Properties.Resources.resources
+C:\Users\KITRI\Desktop\daae\스레드\스레드\obj\Debug\스레드.csproj.GenerateResource.Cache
+C:\Users\KITRI\Desktop\daae\스레드\스레드\obj\Debug\스레드.exe
+C:\Users\KITRI\Desktop\daae\스레드\스레드\obj\Debug\스레드.pdb

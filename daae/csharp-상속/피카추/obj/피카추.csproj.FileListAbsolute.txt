@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\csharp상속\피카추\bin\Debug\피카추.exe
+C:\Users\KITRI\Desktop\daae\csharp상속\피카추\bin\Debug\피카추.pdb
+C:\Users\KITRI\Desktop\daae\csharp상속\피카추\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\csharp상속\피카추\obj\Debug\피카추.exe
+C:\Users\KITRI\Desktop\daae\csharp상속\피카추\obj\Debug\피카추.pdb

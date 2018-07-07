@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\6.성적순\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\6.성적순\bin\Debug\6.성적순.exe
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\6.성적순\bin\Debug\6.성적순.pdb
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\6.성적순\obj\Debug\6.성적순.exe
+C:\Users\KITRI\Desktop\daae\ConsoleApplication1\6.성적순\obj\Debug\6.성적순.pdb

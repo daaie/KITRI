@@ -1,0 +1,5 @@
+C:\Users\KITRI\Desktop\daae\csharp상속\추상클래스\bin\Debug\추상클래스.exe
+C:\Users\KITRI\Desktop\daae\csharp상속\추상클래스\bin\Debug\추상클래스.pdb
+C:\Users\KITRI\Desktop\daae\csharp상속\추상클래스\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\KITRI\Desktop\daae\csharp상속\추상클래스\obj\Debug\추상클래스.exe
+C:\Users\KITRI\Desktop\daae\csharp상속\추상클래스\obj\Debug\추상클래스.pdb
