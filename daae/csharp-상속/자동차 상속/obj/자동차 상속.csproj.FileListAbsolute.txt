@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\csharp상속\자동차 상속\bin\Debug\자동차 상속.exe
-C:\Users\KITRI\Desktop\daae\csharp상속\자동차 상속\bin\Debug\자동차 상속.pdb
-C:\Users\KITRI\Desktop\daae\csharp상속\자동차 상속\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\csharp상속\자동차 상속\obj\Debug\자동차 상속.exe
-C:\Users\KITRI\Desktop\daae\csharp상속\자동차 상속\obj\Debug\자동차 상속.pdb

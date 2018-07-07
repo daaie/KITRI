@@ -1,2 +1,0 @@
-E:\새 폴더\kitri\daae\csharp-채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.exe
-E:\새 폴더\kitri\daae\csharp-채팅프로그램\채팅프로그램\obj\Debug\채팅프로그램.pdb

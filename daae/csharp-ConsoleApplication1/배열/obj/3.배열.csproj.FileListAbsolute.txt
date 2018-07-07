@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\배열\bin\Debug\배열.exe
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\배열\bin\Debug\배열.pdb
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\배열\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\배열\obj\Debug\배열.exe
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\배열\obj\Debug\배열.pdb

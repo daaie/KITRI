@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\csharp-network\csharp-network\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\csharp-network\csharp-network\bin\Debug\csharp-network.exe
-C:\Users\KITRI\Desktop\daae\csharp-network\csharp-network\bin\Debug\csharp-network.pdb
-C:\Users\KITRI\Desktop\daae\csharp-network\csharp-network\obj\Debug\csharp-network.exe
-C:\Users\KITRI\Desktop\daae\csharp-network\csharp-network\obj\Debug\csharp-network.pdb

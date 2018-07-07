@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\4. 크래스\bin\Debug\4. 크래스.exe
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\4. 크래스\bin\Debug\4. 크래스.pdb
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\4. 크래스\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\4. 크래스\obj\Debug\4. 크래스.exe
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\4. 크래스\obj\Debug\4. 크래스.pdb

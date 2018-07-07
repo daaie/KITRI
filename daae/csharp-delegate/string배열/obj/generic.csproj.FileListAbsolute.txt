@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\csharp-delegate\string배열\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\csharp-delegate\string배열\bin\Debug\string배열.exe
-C:\Users\KITRI\Desktop\daae\csharp-delegate\string배열\bin\Debug\string배열.pdb
-C:\Users\KITRI\Desktop\daae\csharp-delegate\string배열\obj\Debug\string배열.exe
-C:\Users\KITRI\Desktop\daae\csharp-delegate\string배열\obj\Debug\string배열.pdb

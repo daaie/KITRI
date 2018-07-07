@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\채팅프로그램\서버프로그램\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\채팅프로그램\서버프로그램\bin\Debug\서버프로그램.exe
-C:\Users\KITRI\Desktop\daae\채팅프로그램\서버프로그램\bin\Debug\서버프로그램.pdb
-C:\Users\KITRI\Desktop\daae\채팅프로그램\서버프로그램\obj\Debug\서버프로그램.exe
-C:\Users\KITRI\Desktop\daae\채팅프로그램\서버프로그램\obj\Debug\서버프로그램.pdb

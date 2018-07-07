@@ -1,8 +1,0 @@
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.exe
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.pdb
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\bin\Debug\WindowsApplication2.exe
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\bin\Debug\WindowsApplication2.pdb
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.Form1.resources
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\obj\Debug\WindowsApplication2.Properties.Resources.resources
-C:\Users\KITRI\Desktop\daae\WindowsApplication2\WindowsApplication2\obj\Debug\listbox,textbox.csproj.GenerateResource.Cache

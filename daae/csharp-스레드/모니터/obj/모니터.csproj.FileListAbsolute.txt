@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\스레드\모니터\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\스레드\모니터\bin\Debug\모니터.exe
-C:\Users\KITRI\Desktop\daae\스레드\모니터\bin\Debug\모니터.pdb
-C:\Users\KITRI\Desktop\daae\스레드\모니터\obj\Debug\모니터.exe
-C:\Users\KITRI\Desktop\daae\스레드\모니터\obj\Debug\모니터.pdb

@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\스레드\스레드생성\bin\Debug\스레드생성.exe
-C:\Users\KITRI\Desktop\daae\스레드\스레드생성\bin\Debug\스레드생성.pdb
-C:\Users\KITRI\Desktop\daae\스레드\스레드생성\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\스레드\스레드생성\obj\Debug\스레드생성.exe
-C:\Users\KITRI\Desktop\daae\스레드\스레드생성\obj\Debug\스레드생성.pdb

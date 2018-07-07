@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\csharp-delegate\369\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\csharp-delegate\369\bin\Debug\369.exe
-C:\Users\KITRI\Desktop\daae\csharp-delegate\369\bin\Debug\369.pdb
-C:\Users\KITRI\Desktop\daae\csharp-delegate\369\obj\Debug\369.exe
-C:\Users\KITRI\Desktop\daae\csharp-delegate\369\obj\Debug\369.pdb

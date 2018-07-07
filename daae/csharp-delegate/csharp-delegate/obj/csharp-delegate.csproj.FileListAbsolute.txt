@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\csharp-delegate\csharp-delegate\bin\Debug\csharp-delegate.exe
-C:\Users\KITRI\Desktop\daae\csharp-delegate\csharp-delegate\bin\Debug\csharp-delegate.pdb
-C:\Users\KITRI\Desktop\daae\csharp-delegate\csharp-delegate\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\csharp-delegate\csharp-delegate\obj\Debug\csharp-delegate.exe
-C:\Users\KITRI\Desktop\daae\csharp-delegate\csharp-delegate\obj\Debug\csharp-delegate.pdb

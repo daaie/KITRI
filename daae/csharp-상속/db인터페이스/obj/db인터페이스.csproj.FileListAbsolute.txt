@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\csharp상속\db인터페이스\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\csharp상속\db인터페이스\bin\Debug\db인터페이스.exe
-C:\Users\KITRI\Desktop\daae\csharp상속\db인터페이스\bin\Debug\db인터페이스.pdb
-C:\Users\KITRI\Desktop\daae\csharp상속\db인터페이스\obj\Debug\db인터페이스.exe
-C:\Users\KITRI\Desktop\daae\csharp상속\db인터페이스\obj\Debug\db인터페이스.pdb

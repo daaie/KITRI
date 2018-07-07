@@ -1,5 +1,0 @@
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\8.링크드리스트\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\8.링크드리스트\bin\Debug\8.링크드리스트.exe
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\8.링크드리스트\bin\Debug\8.링크드리스트.pdb
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\8.링크드리스트\obj\Debug\8.링크드리스트.exe
-C:\Users\KITRI\Desktop\daae\ConsoleApplication1\8.링크드리스트\obj\Debug\8.링크드리스트.pdb
